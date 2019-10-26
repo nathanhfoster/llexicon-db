@@ -1,0 +1,31 @@
+{
+  "name": "llexicon",
+  "description": "A web app that builds your llexicon",
+  "repository": "",
+  "logo": "",
+  "keywords": ["django", "python"],
+  "scripts": {
+    "postdeploy": "python manage.py migrate && python manage.py autosuperuser && python manage.py generatehiitpage"
+  },
+  "env": {
+    "PROJECT_NAME": {
+      "description": "llexicon",
+      "value": "llexicon",
+      "required": true
+    },
+    "YOUR_WEBSITE": {
+      "description": "What is your website domain? Include the first period (.) and ignore 'www'",
+      "value": ".yourdomain.com",
+      "required": false
+    },
+    "SECRET_TOKEN": {
+      "description": "Django project secret token.",
+      "generator": "secret"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql"
+    }
+  ]
+}
