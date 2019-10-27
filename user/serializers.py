@@ -21,7 +21,7 @@ class SettingViewSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication)
+    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True)
     Settings = SettingSerializer(Setting)
     class Meta:
         model = User
@@ -66,8 +66,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AllUserSerializer(serializers.ModelSerializer):
-    SocialAuthentication = SocialAuthenticationSerializer(many=True)
-    Settings = SettingSerializer()
+    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True)
+    Settings = SettingSerializer(Setting)
 
     class Meta:
         model = User
@@ -89,7 +89,7 @@ class AllUserSerializer(serializers.ModelSerializer):
             'date_joined',
             'location',
             'profile_uri',
-            'SocialAuthentication',
+            'SocialAuthentications',
             'groups',
             'user_permissions',
             'Settings', )

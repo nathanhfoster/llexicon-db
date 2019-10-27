@@ -76,7 +76,7 @@ class SettingView(viewsets.ModelViewSet):
     def view(self, request, pk):
         queryset = Setting.objects.all().filter(user=pk)
 
-        serializer = SettingViewSerializer(queryset, many=True)
+        serializer = SettingSerializer(queryset, many=True)
 
         if serializer.data:
             return Response(serializer.data[0])

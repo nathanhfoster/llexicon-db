@@ -4,8 +4,8 @@ from django.conf import settings
 
 class SocialAuthentication(models.Model):
     provider = models.CharField(max_length=256)
-    provider_id = models.CharField(max_length=256)
-    user = models.OneToOneField(
+    provider_id = models.CharField(max_length=256, unique=True)
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='SocialAuthentications',
         on_delete=models.CASCADE, )
@@ -20,4 +20,4 @@ class SocialAuthentication(models.Model):
         verbose_name = 'Social Provider'
         verbose_name_plural = 'Social Providers'
         ordering = ('-user_id',)
-        unique_together = ('provider_id',)
+        # unique_together = ('provider_id',)

@@ -109,7 +109,7 @@ WSGI_APPLICATION = 'llexicon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lexi',
+        'NAME': 'llexicon',
         'USER': 'postgres',
         'PASSWORD': 'Evelynn8',
         'HOST': '127.0.0.1',
