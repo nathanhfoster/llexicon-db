@@ -39,17 +39,18 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
 
         name = request.data['name']
         password = make_password(pk)
+        email = request.data['email']
         picture = request.data['picture']
         [first_name, last_name] = str.split(name)
 
         username = name.replace(" ", "")
 
         user, userCreated = User.objects.filter(
-            Q(email=request.data['email'])
+            Q(email=email)
             | Q(facebook_id=pk)
             | Q(google_id=pk),
         ).get_or_create(
-            email=request.data['email'],
+            email=email,
 
             defaults={
                 'facebook_id': pk,
@@ -99,7 +100,7 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
                 'expires_in': request.data['expires_in'],
                 'expires_at': request.data['expires_at'],
                 'name': name,
-                'email': request.data['email'],
+                'email': email,
                 'picture': picture
             },
         )
