@@ -32,9 +32,9 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-your_website = os.environ.get('YOUR_WEBSITE', '.insightsabroad.com')
+your_website = os.environ.get('YOUR_WEBSITE', '.llexicom.com')
 ALLOWED_HOSTS = ['.herokuapp.com', '.knockhq.com', your_website]
-PROJECT_NAME = os.environ.get('Insight Abroad', 'Insight')
+PROJECT_NAME = os.environ.get('Lexicom', 'Lexi')
 
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'gosonder@gmail.com' #my gmail username
@@ -62,10 +62,8 @@ INSTALLED_APPS = [
 
     'authentication_authorization',
     'user',
-    'experience',
-    'education',
-    'technical_skill',
     'social_authentication',
+    'storages',
     'corsheaders',
 ]
 

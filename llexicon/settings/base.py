@@ -59,9 +59,6 @@ INSTALLED_APPS = [
 
     'authentication_authorization',
     'user',
-    'experience',
-    'education',
-    'technical_skill',
     'social_authentication',
     'corsheaders',
 ]

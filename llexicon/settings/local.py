@@ -60,9 +60,6 @@ INSTALLED_APPS = [
 
     'authentication_authorization',
     'user',
-    'experience',
-    'education',
-    'technical_skill',
     'social_authentication',
     'storages',
     'corsheaders',
@@ -112,9 +109,9 @@ WSGI_APPLICATION = 'llexicon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'llexicon',
+        'NAME': 'lexi',
         'USER': 'postgres',
-        'PASSWORD': 'sonder',
+        'PASSWORD': 'Evelynn8',
         'HOST': '127.0.0.1',
         'PORT': '8080',
     }

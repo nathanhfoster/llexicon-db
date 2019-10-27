@@ -5,9 +5,6 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-from education.models import Education
-from technical_skill.models import SpecializationSkillExperience
-from experience.models import Experience
 # Allow Spaces in User names
 
 
@@ -50,7 +47,6 @@ class User(AbstractUser):
             'unique': ("A user with that username or email already exists."),
         },
     )
-    bio = models.TextField(blank=True, max_length=1000)
     opt_in = models.BooleanField(blank=True, default=False)
 
     location = models.CharField(blank=True, max_length=256)
