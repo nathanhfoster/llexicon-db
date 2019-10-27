@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
 from rest_framework import serializers
 
@@ -20,7 +20,18 @@ from django.contrib.auth.models import update_last_login
 class SocialAuthenticationView(viewsets.ModelViewSet):
     serializer_class = SocialAuthenticationSerializer
     queryset = SocialAuthentication.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
+
+    def get_permissions(self):
+        # allow an authenticated user to create via POST
+        if self.request.method == 'GET':
+            self.permission_classes = (AllowAny,)
+        if self.request.method == 'POST':
+            self.permission_classes = (AllowAny,)
+        if self.request.method == 'PATCH':
+            self.permission_classes = (
+                IsAuthenticated,)
+        return super(SocialAuthenticationView, self).get_permissions()
 
     @action(methods=['post'], detail=True, permission_classes=[permission_classes])
     def provider(self, request, pk):
@@ -58,6 +69,7 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
                 'profile_uri': username
             },
         )
+
         if user:
             # record already exist
             setattr(user, 'first_name', first_name)
@@ -82,7 +94,7 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
             provider_id=pk,
             defaults={
                 'provider': request.data['provider'],
-                'user_id': user,
+                'user': user,
                 'access_token': request.data['access_token'],
                 'expires_in': request.data['expires_in'],
                 'expires_at': request.data['expires_at'],
@@ -91,5 +103,4 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
                 'picture': picture
             },
         )
-
         return Response({**{'token': token.key}, **userSerialized.data})

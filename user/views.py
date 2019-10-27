@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import F
 from rest_framework import serializers
 
@@ -19,12 +19,11 @@ import json
 class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter, )
     search_fields = ('id', 'profile_uri')
 
     def get_permissions(self):
-
         # allow an authenticated user to create via POST
         if self.request.method == 'GET':
             self.permission_classes = (AllowAny,)
@@ -32,7 +31,7 @@ class UserView(viewsets.ModelViewSet):
             self.permission_classes = (AllowAny,)
         if self.request.method == 'PATCH':
             self.permission_classes = (
-                permissions.IsAuthenticated, IsUpdateProfile,)
+                IsAuthenticated, IsUpdateProfile,)
         return super(UserView, self).get_permissions()
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
@@ -62,15 +61,15 @@ class UserView(viewsets.ModelViewSet):
 class SettingView(viewsets.ModelViewSet):
     serializer_class = SettingSerializer
     queryset = Setting.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
         if self.request.method == 'GET':
-            self.permission_classes = (permissions.IsAuthenticated,)
+            self.permission_classes = (IsAuthenticated,)
         if self.request.method == 'PATCH':
             self.permission_classes = (
-                permissions.IsAuthenticated,)
+                IsAuthenticated,)
         return super(SettingView, self).get_permissions()
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
