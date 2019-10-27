@@ -20,7 +20,7 @@ from django.contrib.auth.models import update_last_login
 class SocialAuthenticationView(viewsets.ModelViewSet):
     serializer_class = SocialAuthenticationSerializer
     queryset = SocialAuthentication.objects.all()
-    permission_classes = (AllowAny)
+    permission_classes = (AllowAny, )
 
     @action(methods=['post'], detail=True, permission_classes=[permission_classes])
     def provider(self, request, pk):
