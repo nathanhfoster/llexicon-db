@@ -9,9 +9,6 @@ urlpatterns = [
     path('', admin.site.urls),
     path('api/v1/', include('authentication_authorization.urls')),
     path('api/v1/', include('user.urls')),
-    path('api/v1/', include('experience.urls')),
-    path('api/v1/', include('education.urls')),
-    path('api/v1/', include('technical_skill.urls')),
     path('api/v1/', include('social_authentication.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/login/', CustomAuthToken.as_view())

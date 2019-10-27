@@ -58,30 +58,6 @@ class UserView(viewsets.ModelViewSet):
         serializer = AdminSerializer(qs, many=True)
         return Response(serializer.data)
 
-    @action(methods=['post'], detail=True)
-    def addEducation(self, request, pk):
-        education = json.loads(request.data['education'])
-        user = get_user_model().objects.get(id=pk)
-        user.education.clear()
-        user.education.set(education)
-        return Response(json.dumps(education))
-
-    @action(methods=['post'], detail=True)
-    def addSkills(self, request, pk):
-        technical_skills = json.loads(request.data['technical_skills'])
-        user = get_user_model().objects.get(id=pk)
-        user.technical_skills.clear()
-        user.technical_skills.set(technical_skills)
-        return Response(json.dumps(technical_skills))
-
-    @action(methods=['post'], detail=True)
-    def addExperience(self, request, pk):
-        experience = json.loads(request.data['experience'])
-        user = get_user_model().objects.get(id=pk)
-        user.experience.clear()
-        user.experience.set(experience)
-        return Response(json.dumps(experience))
-
 
 class SettingView(viewsets.ModelViewSet):
     serializer_class = SettingSerializer

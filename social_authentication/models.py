@@ -5,9 +5,9 @@ from django.conf import settings
 class SocialAuthentication(models.Model):
     provider = models.CharField(max_length=256)
     provider_id = models.CharField(max_length=256)
-    user_id = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        related_name='SocialAuthentication',
+        related_name='SocialAuthentications',
         on_delete=models.CASCADE, )
     access_token = models.TextField()
     expires_in = models.CharField(max_length=256)

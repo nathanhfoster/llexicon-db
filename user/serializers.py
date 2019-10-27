@@ -2,13 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 from user.models import User, Setting
+from social_authentication.models import SocialAuthentication
 from social_authentication.serializers import SocialAuthenticationSerializer
-from education.models import Education
-from education.serializers import EducationSerializer
-from technical_skill.models import SpecializationSkillExperience
-from technical_skill.serializers import SpecializationSkillExperienceSerializer
-from experience.models import Experience
-from experience.serializers import ExperienceSerializer
 
 
 class SettingSerializer(serializers.ModelSerializer):
@@ -26,16 +21,8 @@ class SettingViewSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
-    UserEducation = EducationSerializer(
-        Education, many=True)
-
-    UserSpecialization = SpecializationSkillExperienceSerializer(
-        SpecializationSkillExperience, many=True)
-
-    UserExperience = ExperienceSerializer(
-        Experience, many=True)
-
+    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication)
+    Settings = SettingSerializer(Setting)
     class Meta:
         model = User
         fields = '__all__'
@@ -54,6 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
                 profile_uri=validated_data['username'],
                 picture=validated_data['picture'],
             )
+        # Social Login
         except:
             user = User.objects.create(
                 email=validated_data['email'],
@@ -124,6 +112,6 @@ class AdminSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'groups', 'user_permissions', 'username', 'first_name', 'last_name', 'opt_in', 'last_login',
-            'bio', 'is_superuser', 'email', 'is_staff',
+            'is_superuser', 'email', 'is_staff',
             'is_active', 'date_joined', 'last_login',
         )
