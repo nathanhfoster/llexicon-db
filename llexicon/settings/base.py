@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
     'authentication_authorization',
     'user',
+    'diary',
     'social_authentication',
     'corsheaders',
 ]

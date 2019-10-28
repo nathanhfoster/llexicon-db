@@ -1,9 +1,9 @@
 from django.urls import path, include
-from . import views
+from .views import SocialAuthenticationView
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('social-authentications', views.SocialAuthenticationView)
+router.register('social-authentications', SocialAuthenticationView)
 
 urlpatterns = [
     path('', include(router.urls))
