@@ -9,7 +9,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class EntrySerializer(serializers.ModelSerializer):
-    tags = TagSerializer(Tag, many=True, required=False)
+    tags = TagSerializer(Tag, many=True,  read_only=True, required=False)
 
     class Meta:
         model = Entry
