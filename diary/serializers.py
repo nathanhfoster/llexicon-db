@@ -7,8 +7,10 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = '__all__'
 
+
 class EntrySerializer(serializers.ModelSerializer):
-    tags = TagSerializer(Tag, many=True)
+    tags = TagSerializer(Tag, many=True, required=False)
+
     class Meta:
         model = Entry
         fields = '__all__'

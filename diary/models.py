@@ -25,8 +25,9 @@ class Entry(models.Model):
         on_delete=models.CASCADE, )
     tags = models.ManyToManyField(
         Tag,
-        related_name='tags',)
-    title = models.CharField(max_length=256)
+        related_name='tags',
+        blank=True, )
+    title = models.CharField(max_length=256, blank=True)
     html = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now_add=True)
