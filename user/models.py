@@ -49,8 +49,6 @@ class User(AbstractUser):
     )
     opt_in = models.BooleanField(blank=True, default=False)
 
-    location = models.CharField(blank=True, max_length=256)
-
     profile_uri = models.SlugField(unique=True)
 
     class Meta:

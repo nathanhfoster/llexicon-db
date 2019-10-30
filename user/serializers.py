@@ -87,7 +87,6 @@ class AllUserSerializer(serializers.ModelSerializer):
             'bio',
             'opt_in',
             'date_joined',
-            'location',
             'profile_uri',
             'SocialAuthentications',
             'groups',

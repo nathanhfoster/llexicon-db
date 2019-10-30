@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = (
         'username', 'id', 'opt_in',
         'is_superuser', 'email', 'is_staff',
-        'is_active', 'date_joined', 'last_login', 'location',)
+        'is_active', 'date_joined', 'last_login',)
 
 
 admin.site.register(User, CustomUserAdmin)

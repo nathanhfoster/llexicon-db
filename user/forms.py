@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = (
             'username', 'id', 'opt_in',
             'is_superuser', 'email', 'is_staff',
-            'is_active', 'date_joined', 'last_login', 'location')
+            'is_active', 'date_joined', 'last_login', )
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -20,4 +20,4 @@ class CustomUserChangeForm(UserChangeForm):
         fields = (
             'username', 'opt_in',
             'is_superuser', 'email', 'is_staff',
-            'is_active', 'date_joined', 'last_login', 'location')
+            'is_active', 'date_joined', 'last_login', )

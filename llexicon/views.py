@@ -44,6 +44,5 @@ class CustomAuthToken(ObtainAuthToken):
             'last_login': user.last_login,
             'opt_in': user.opt_in,
             'date_joined': user.date_joined,
-            'location': user.location,
             'profile_uri': user.profile_uri
         })
