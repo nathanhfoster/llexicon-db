@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.timezone import now
 
 class Tag(models.Model):
     author = models.ForeignKey(
@@ -30,6 +31,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=256, blank=True)
     html = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+    date_created_by_author = models.DateTimeField(default=now())
     date_updated = models.DateTimeField(auto_now_add=True)
     views = models.PositiveIntegerField(default=0)
     

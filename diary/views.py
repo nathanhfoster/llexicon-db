@@ -1,6 +1,6 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
-from rest_framework import serializers
+from rest_framework import serializers, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -9,6 +9,17 @@ from rest_framework import viewsets, permissions
 from .serializers import EntrySerializer, TagSerializer
 from django.utils.timezone import now
 import json
+
+class StandardResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 25
+    page_size_query_param = 'page_size'
+    max_page_size = 500
+
+
+class LargeResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 class TagView(viewsets.ModelViewSet):
@@ -19,6 +30,7 @@ class TagView(viewsets.ModelViewSet):
 
 class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
+    # pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
     permission_classes = (AllowAny,)
 
@@ -63,4 +75,25 @@ class EntryView(viewsets.ModelViewSet):
 
         serializer = EntrySerializer(queryset, many=True)
 
+        return Response(serializer.data)
+
+    @action(methods=['post'], detail=True)
+    def view_by_date(self, request, pk):
+       
+        dateString = request.data['date']
+        date = dateString.split('-')
+        year = date[0]
+        month = date[1]
+        day = date[2].split('T')[0]
+
+        # # print(dateString)
+        print(year, month, day)
+
+        queryset = Entry.objects.all().filter(
+            date_created_by_author__year__gte=year,
+            date_created_by_author__month__gte=month,)
+        # end_date__year__lte=year,
+        # end_date__month__lte=month, )
+
+        serializer = EntrySerializer(queryset, many=True)
         return Response(serializer.data)
