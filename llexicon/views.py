@@ -24,7 +24,6 @@ class CustomAuthToken(ObtainAuthToken):
         user = serializer.validated_data['user']
         update_last_login(None, user)
         token, created = Token.objects.get_or_create(user=user)
-        print(user.uploaded_picture)
         uploaded_picture = None
         try:
             uploaded_picture = user.uploaded_picture.url

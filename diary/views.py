@@ -86,8 +86,7 @@ class EntryView(viewsets.ModelViewSet):
         month = date[1]
         day = date[2].split('T')[0]
 
-        # # print(dateString)
-        print(year, month, day)
+        # print(year, month, day)
 
         queryset = Entry.objects.all().filter(
             date_created_by_author__year__gte=year,
