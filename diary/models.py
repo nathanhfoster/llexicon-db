@@ -41,5 +41,5 @@ class Entry(models.Model):
         verbose_name_plural = 'Entries'
         ordering = ('-date_created',)
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
