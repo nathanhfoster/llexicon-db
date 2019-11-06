@@ -39,7 +39,7 @@ class EntryView(viewsets.ModelViewSet):
     def get_permissions(self):
         # allow an authenticated user to create via POST
         if self.request.method == 'GET':
-            self.permission_classes = (IsAuthenticated, IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'PATCH':
             self.permission_classes = (
                 IsAuthorOrSuperUser,)
