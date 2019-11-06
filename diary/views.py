@@ -10,8 +10,9 @@ from .serializers import EntrySerializer, TagSerializer
 from django.utils.timezone import now
 import json
 
+
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 25
+    page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 500
 
@@ -30,7 +31,7 @@ class TagView(viewsets.ModelViewSet):
 
 class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
-    # pagination_class = StandardResultsSetPagination
+    pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
     permission_classes = (AllowAny,)
 
@@ -73,13 +74,18 @@ class EntryView(viewsets.ModelViewSet):
     def view(self, request, pk):
         queryset = Entry.objects.all().filter(author=pk)
 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = EntrySerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = EntrySerializer(queryset, many=True)
 
         return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def view_by_date(self, request, pk):
-       
+
         dateString = request.data['date']
         date = dateString.split('-')
         year = date[0]
