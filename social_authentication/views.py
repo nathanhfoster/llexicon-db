@@ -5,7 +5,7 @@ from rest_framework import serializers
 from .models import SocialAuthentication
 from rest_framework import viewsets, permissions
 from .serializers import SocialAuthenticationSerializer
-from user.permissions import IsUpdateProfile, IsStaffOrTargetUser
+from user.permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from user.models import User

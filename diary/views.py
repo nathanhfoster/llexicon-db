@@ -1,4 +1,5 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from user.permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
 from django.db.models import Q
 from rest_framework import serializers, pagination
 from rest_framework.decorators import action
@@ -33,15 +34,15 @@ class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthorOrSuperUser,)
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
         if self.request.method == 'GET':
-            self.permission_classes = (IsAuthenticated,)
+            self.permission_classes = (IsAuthenticated, IsAuthorOrSuperUser,)
         if self.request.method == 'PATCH':
             self.permission_classes = (
-                IsAuthenticated,)
+                IsAuthorOrSuperUser,)
         return super(EntryView, self).get_permissions()
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])

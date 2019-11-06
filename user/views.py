@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group
 from .models import User, Setting
 from rest_framework import viewsets, permissions
 from .serializers import UserSerializer, SettingSerializer, SettingViewSerializer, Serializer, AdminSerializer
-from user.permissions import IsUpdateProfile, IsStaffOrTargetUser
+from user.permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
@@ -31,7 +31,7 @@ class UserView(viewsets.ModelViewSet):
             self.permission_classes = (AllowAny,)
         if self.request.method == 'PATCH':
             self.permission_classes = (
-                IsAuthenticated, IsUpdateProfile,)
+                IsAuthenticated, IsAuthorOrSuperUser,)
         return super(UserView, self).get_permissions()
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])

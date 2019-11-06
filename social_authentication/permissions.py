@@ -2,7 +2,7 @@ from rest_framework import permissions
 from user.models import User
 
 
-class IsUpdateProfile(permissions.BasePermission):
+class IsAuthorOrSuperUser(permissions.BasePermission):
     """
     Custom permission to only allow users to edit their own profile
     """
