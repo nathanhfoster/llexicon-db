@@ -4,7 +4,7 @@ from .models import Entry, Tag
 class CustomEntry(admin.ModelAdmin):
     model = Entry
     list_display = (
-        'id', 'title', 'date_created_by_author', 'date_updated',)
+        'id', 'title', 'author', 'date_created_by_author', 'date_updated',)
 
 class CustomTag(admin.ModelAdmin):
     model = Tag
