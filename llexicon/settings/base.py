@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'user',
     'diary',
     'social_authentication',
+    'file',
     'corsheaders',
 ]
 
