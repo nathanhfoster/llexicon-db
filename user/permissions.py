@@ -1,6 +1,5 @@
 from rest_framework import permissions
 from user.models import User
-from rest_framework.authtoken.models import Token
 
 
 class IsAuthorOrSuperUser(permissions.BasePermission):
@@ -10,12 +9,8 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
         user = request.user
-        token = Token.objects.get(user=user)
 
         if user.is_superuser:
-            return True
-
-        elif(token):
             return True
 
         elif('pk' in view.kwargs):
