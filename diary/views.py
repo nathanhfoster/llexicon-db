@@ -34,7 +34,7 @@ class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthorOrSuperUser,)
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
@@ -43,6 +43,9 @@ class EntryView(viewsets.ModelViewSet):
         if self.request.method == 'PATCH':
             self.permission_classes = (
                 IsAuthorOrSuperUser,)
+        if self.request.method == 'POST':
+            self.permission_classes = (
+                IsAuthenticated,)
         return super(EntryView, self).get_permissions()
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
@@ -62,13 +65,6 @@ class EntryView(viewsets.ModelViewSet):
         entry.save()
         serializer = EntrySerializer(entry)
 
-        # try:
-        #     entry.tags.set(tags)
-        # except:
-        #     for i in tags:
-        #         t = Tag.objects.get(id=i)
-        #         t.entry_set.add(pk)
-        # return Response(json.dumps(tags))
         return Response(serializer.data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
@@ -84,7 +80,7 @@ class EntryView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    @action(methods=['post'], detail=True)
+    @action(methods=['post'], detail=True, permission_classes=[permission_classes])
     def view_by_date(self, request, pk):
 
         dateString = request.data['date']
@@ -96,10 +92,12 @@ class EntryView(viewsets.ModelViewSet):
         # print(year, month, day)
 
         queryset = Entry.objects.all().filter(
+            author=pk,
             date_created_by_author__year__gte=year,
             date_created_by_author__month__gte=month,)
         # end_date__year__lte=year,
         # end_date__month__lte=month, )
 
         serializer = EntrySerializer(queryset, many=True)
+
         return Response(serializer.data)

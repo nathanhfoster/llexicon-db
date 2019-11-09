@@ -21,7 +21,7 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter, )
-    search_fields = ('id', 'profile_uri')
+    search_fields = ('id',)
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
@@ -33,12 +33,6 @@ class UserView(viewsets.ModelViewSet):
             self.permission_classes = (
                 IsAuthenticated, IsAuthorOrSuperUser,)
         return super(UserView, self).get_permissions()
-
-    @action(methods=['get'], detail=True, permission_classes=[permission_classes])
-    def profile(self, request, pk):
-        qs = User.objects.get(profile_uri=pk)
-
-        return Response(UserSerializer(qs).data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def refresh(self, request, pk):

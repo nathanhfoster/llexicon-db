@@ -58,16 +58,14 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
                 'password': password,
                 'first_name': first_name,
                 'last_name': last_name,
-                'picture': picture,
-                'profile_uri': username
+                'picture': picture
             } if(providerIsFacebook) else {
                 'google_id': pk,
                 'username': username,
                 'password': password,
                 'first_name': first_name,
                 'last_name': last_name,
-                'picture': picture,
-                'profile_uri': username
+                'picture': picture
             },
         )
 

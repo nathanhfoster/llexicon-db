@@ -21,8 +21,8 @@ class SettingViewSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True)
-    Settings = SettingSerializer(Setting)
+    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True, read_only=True)
+    Settings = SettingSerializer(Setting, read_only=True)
     class Meta:
         model = User
         fields = '__all__'
@@ -38,7 +38,6 @@ class UserSerializer(serializers.ModelSerializer):
                 username=validated_data['username'],
                 password=make_password(validated_data['password']),
                 opt_in=validated_data['opt_in'],
-                profile_uri=validated_data['username'],
                 picture=validated_data['picture'],
             )
         # Social Login
@@ -47,8 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
                 email=validated_data['email'],
                 username=validated_data['username'],
                 password=make_password(validated_data['password']),
-                opt_in=validated_data['opt_in'],
-                profile_uri=validated_data['username'],
+                opt_in=validated_data['opt_in']
             )
 
         user.set_password(validated_data["password"])
@@ -87,7 +85,6 @@ class AllUserSerializer(serializers.ModelSerializer):
             'bio',
             'opt_in',
             'date_joined',
-            'profile_uri',
             'SocialAuthentications',
             'groups',
             'user_permissions',

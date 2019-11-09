@@ -49,8 +49,6 @@ class User(AbstractUser):
     )
     opt_in = models.BooleanField(blank=True, default=False)
 
-    profile_uri = models.SlugField(unique=True)
-
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
