@@ -34,14 +34,14 @@ class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
-    permission_classes = (IsAuthorOrSuperUser,)
+    permission_classes = (IsAuthenticated,)
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
         if self.request.method == 'GET':
-            self.permission_classes = (IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthenticated,)
         if self.request.method == 'PATCH':
-            self.permission_classes = (IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthenticated,)
         if self.request.method == 'POST':
             self.permission_classes = (IsAuthenticated,)
         return super(EntryView, self).get_permissions()

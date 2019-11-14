@@ -1,5 +1,5 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from user.permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
+from .permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
 from django.db.models import Q
 from rest_framework import serializers, pagination
 from rest_framework.decorators import action
@@ -33,14 +33,13 @@ class FileView(viewsets.ModelViewSet):
     serializer_class = FileSerializer
     pagination_class = StandardResultsSetPagination
     queryset = File.objects.all()
-    permission_classes = (IsAuthorOrSuperUser,)
+    permission_classes = (IsAuthenticated,)
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            self.permission_classes = (IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthenticated,)
         if self.request.method == 'PATCH':
-            self.permission_classes = (
-                IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthenticated,)
         return super(FileView, self).get_permissions()
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])

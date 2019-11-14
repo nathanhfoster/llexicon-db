@@ -20,12 +20,10 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
         elif('pk' in view.kwargs):
             userId = view.kwargs['pk']
 
-        print(user)
+       
 
         try:
-            print(userId)
-            entry_profile = Entry.objects.all().filter(author=userId)
-            print(user, entry_profile.length)
+            entry_profile = Entry.objects.get(author=userId)
             if user == entry_profile.author:
                 return True
         except:
