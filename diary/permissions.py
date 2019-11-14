@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import User
+from .models import Entry
 
 
 class IsAuthorOrSuperUser(permissions.BasePermission):
@@ -20,9 +20,11 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
         elif('pk' in view.kwargs):
             userId = view.kwargs['pk']
 
+       
+
         try:
-            user_profile = User.objects.get(pk=userId)
-            if user == user_profile:
+            entry_profile = Entry.objects.get(author=userId)
+            if user == entry_profile.author:
                 return True
         except:
             # If the user was not found then return false

@@ -1,5 +1,5 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from user.permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
+from .permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
 from django.db.models import Q
 from rest_framework import serializers, pagination
 from rest_framework.decorators import action
