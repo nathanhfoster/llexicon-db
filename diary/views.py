@@ -41,11 +41,11 @@ class EntryView(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'PATCH':
-            self.permission_classes = (
-                IsAuthorOrSuperUser,)
+            self.permission_classes = (IsAuthorOrSuperUser,)
+        if self.request.method == 'DELETE':
+            self.permission_classes = (IsAuthenticated,)
         if self.request.method == 'POST':
-            self.permission_classes = (
-                IsAuthenticated,)
+            self.permission_classes = (IsAuthenticated,)
         return super(EntryView, self).get_permissions()
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])

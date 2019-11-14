@@ -45,7 +45,7 @@ class FileView(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def view(self, request, pk):
-        queryset = File.objects.all().filter(author=pk)
+        queryset = File.objects.all().filter(entry_id=pk)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

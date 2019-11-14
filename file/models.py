@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from diary.models import Entry
 
 
 class File(models.Model):
@@ -8,11 +8,10 @@ class File(models.Model):
         ('Video', 'Video'),
         ('File', 'File'),
     )
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='UserMedia',
-        on_delete=models.CASCADE,
-        blank=True, null=True, )
+    entry_id = models.ForeignKey(
+        Entry,
+        related_name='EntryFiles',
+        on_delete=models.CASCADE, )
     media_type = models.CharField(blank=True, max_length=6, choices=TYPES)
     url = models.FileField()
     date_created = models.DateTimeField(auto_now_add=True)

@@ -15,10 +15,13 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
 
         elif('pk' in view.kwargs):
             userId = view.kwargs['pk']
-            user_profile = User.objects.get(pk=userId)
-
-            if user == user_profile:
-                return True
+            try:
+                user_profile = User.objects.get(pk=userId)
+                if user == user_profile:
+                    return True
+            except:
+                # If the user was not found then return false
+                return False
 
         else:
             return False

@@ -5,7 +5,7 @@ from .models import File
 class CustomFile(admin.ModelAdmin):
     model = File
     list_display = (
-        'id', 'author', 'media_type', 'url',
+        'id', 'entry_id', 'media_type', 'url',
         'date_created', 'date_updated',)
 
 
