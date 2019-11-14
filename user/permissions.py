@@ -9,21 +9,23 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
         user = request.user
+        userId = None
 
         if user.is_superuser:
             return True
 
+        elif('pk' in view.request.query_params):
+            userId = view.request.query_params['pk']
+            
         elif('pk' in view.kwargs):
             userId = view.kwargs['pk']
-            try:
-                user_profile = User.objects.get(pk=userId)
-                if user == user_profile:
-                    return True
-            except:
-                # If the user was not found then return false
-                return False
 
-        else:
+        try:
+            user_profile = User.objects.get(pk=userId)
+            if user == user_profile:
+                return True
+        except:
+            # If the user was not found then return false
             return False
 
 
