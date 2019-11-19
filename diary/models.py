@@ -9,7 +9,7 @@ class Tag(models.Model):
         on_delete=models.CASCADE, )
     title = models.CharField(max_length=256)
     date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Tag'
@@ -32,7 +32,7 @@ class Entry(models.Model):
     html = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_created_by_author = models.DateTimeField(default=now())
-    date_updated = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
     
 

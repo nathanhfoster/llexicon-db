@@ -59,7 +59,6 @@ class EntryView(viewsets.ModelViewSet):
                 value = request.data[key]
                 setattr(entry, key, value)
 
-        entry.date_updated = now()
         entry.save()
         serializer = EntrySerializer(entry)
 
