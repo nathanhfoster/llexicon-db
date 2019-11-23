@@ -111,7 +111,7 @@ class EntryView(viewsets.ModelViewSet):
             Q(author=pk),
             Q(title__icontains=s) |
             Q(html__icontains=s)
-        )
+        )[:10]
 
         serializer = EntrySerializer(queryset, many=True)
 
