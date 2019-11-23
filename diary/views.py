@@ -10,6 +10,7 @@ from rest_framework import viewsets, permissions
 from .serializers import EntrySerializer, TagSerializer
 from django.utils.timezone import now
 import json
+from rest_framework.filters import SearchFilter
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
@@ -35,6 +36,8 @@ class EntryView(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     queryset = Entry.objects.all()
     permission_classes = (IsAuthenticated,)
+    filter_backends = (SearchFilter, )
+    search_fields = ('title', 'html')
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
@@ -94,6 +97,21 @@ class EntryView(viewsets.ModelViewSet):
             date_created_by_author__month__gte=month,)
         # end_date__year__lte=year,
         # end_date__month__lte=month, )
+
+        serializer = EntrySerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    @action(methods=['post'], detail=True, permission_classes=[permission_classes])
+    def search(self, request, pk):
+
+        s = request.data['search']
+
+        queryset = Entry.objects.all().filter(
+            Q(author=pk),
+            Q(title__icontains=s) |
+            Q(html__icontains=s)
+        )
 
         serializer = EntrySerializer(queryset, many=True)
 
