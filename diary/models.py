@@ -37,6 +37,9 @@ class Entry(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
 
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+
     class Meta:
         verbose_name = 'Entry'
         verbose_name_plural = 'Entries'
