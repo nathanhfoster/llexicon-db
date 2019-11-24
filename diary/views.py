@@ -14,15 +14,15 @@ from rest_framework.filters import SearchFilter
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 5
+    page_size = 10
     page_size_query_param = 'page_size'
-    max_page_size = 500
+    # max_page_size = 500
 
 
 class LargeResultsSetPagination(pagination.PageNumberPagination):
     page_size = 50
     page_size_query_param = 'page_size'
-    max_page_size = 1000
+    # max_page_size = 1000
 
 
 class TagView(viewsets.ModelViewSet):
