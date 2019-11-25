@@ -1,36 +1,30 @@
 from rest_framework import permissions
 from .models import Entry
+from django.db.models import Q
 
 
 class IsAuthorOrSuperUser(permissions.BasePermission):
-    """
-    Custom permission to only allow users to edit their own profile
-    """
 
     def has_permission(self, request, view):
         user = request.user
-        userId = None
+
+        # print("User: ", user)
 
         if user.is_superuser:
             return True
 
-        elif('pk' in view.request.query_params):
-            userId = view.request.query_params['pk']
-            
-        elif('pk' in view.kwargs):
-            userId = view.kwargs['pk']
+        entryId = view.kwargs['pk']
 
-        print(user)
+        # print('entryId: ', entryId)
 
-        try:
-            print(userId)
-            entry_profile = Entry.objects.all().filter(author=userId)
-            print(user, entry_profile.length)
-            if user == entry_profile.author:
-                return True
-        except:
-            # If the user was not found then return false
-            return False
+        entry_profile = Entry.objects.all().filter(Q(pk=entryId), Q(author=user))
+
+        # print("entry_profile: ", entry_profile)
+
+        if entry_profile.count() > 0:
+            return True
+
+        return False
 
 
 class IsStaffOrTargetUser(permissions.BasePermission):
