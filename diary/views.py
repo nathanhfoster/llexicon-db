@@ -41,11 +41,14 @@ class EntryView(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            if self.request.path == '/api/v1/entries/2/view/':
+            if self.request.path.find('view') != -1:
                 self.permission_classes = (IsAuthenticated,)
             else:
                 self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'PATCH':
+            # if self.request.path.find('update_with_tags') != -1:
+            #     self.permission_classes = (IsAuthenticated,)
+            # else:
             self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'POST':
             self.permission_classes = (IsAuthenticated,)
