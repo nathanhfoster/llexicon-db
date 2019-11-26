@@ -9,7 +9,8 @@ from social_authentication.serializers import SocialAuthenticationSerializer
 class SettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Setting
-        fields = ('id', 'user', 'show_footer', 'push_messages',)
+        fields = ('id', 'user', 'show_footer',
+                  'push_messages', 'offline_mode',)
         read_only_fields = ('id',)
 
 
@@ -21,8 +22,10 @@ class SettingViewSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True, read_only=True)
+    SocialAuthentications = SocialAuthenticationSerializer(
+        SocialAuthentication, many=True, read_only=True)
     Settings = SettingSerializer(Setting, read_only=True)
+
     class Meta:
         model = User
         fields = '__all__'
@@ -64,7 +67,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AllUserSerializer(serializers.ModelSerializer):
-    SocialAuthentications = SocialAuthenticationSerializer(SocialAuthentication, many=True)
+    SocialAuthentications = SocialAuthenticationSerializer(
+        SocialAuthentication, many=True)
     Settings = SettingSerializer(Setting)
 
     class Meta:

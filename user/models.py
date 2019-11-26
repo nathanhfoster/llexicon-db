@@ -18,16 +18,14 @@ class Setting(models.Model):
         related_name='Settings',
         on_delete=models.CASCADE,)
 
-    show_footer = models.BooleanField(default=True)
+    show_footer = models.BooleanField(default=False)
     push_messages = models.BooleanField(default=False)
+    offline_mode = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Setting'
         verbose_name_plural = 'Settings'
         ordering = ('-user',)
-
-    # def __str__(self):
-    #     return '%s: show_footer: %d, push_messages: %d' % (self.user, self.show_footer, self.push_messages)
 
 
 class User(AbstractUser):
