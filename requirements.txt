@@ -8,6 +8,7 @@ django-storages==1.7.1
 Django==2.1.11
 django-cors-headers==2.4.0
 django-crispy-forms==1.7.2
+django-import-export==1.2.0
 djangorestframework==3.9.1
 gunicorn==19.9.0
 newrelic==4.8.0.110
