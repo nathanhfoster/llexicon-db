@@ -4,11 +4,10 @@ from django.utils.timezone import now
 
 
 class Tag(models.Model):
-    author = models.ForeignKey(
+    authors = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='tags',
-        on_delete=models.CASCADE, )
-    title = models.CharField(max_length=256)
+        related_name='tags', )
+    title = models.CharField(max_length=256, primary_key=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -37,8 +36,10 @@ class Entry(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
 
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Entry'

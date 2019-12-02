@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, TagSerializer
+from .serializers import EntrySerializer, TagSerializer, TagMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -28,7 +28,25 @@ class LargeResultsSetPagination(pagination.PageNumberPagination):
 class TagView(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            if self.request.path.find('view') != -1:
+                self.permission_classes = (IsAuthenticated,)
+        if self.request.method == 'PATCH':
+            self.permission_classes = (IsAuthenticated,)
+        if self.request.method == 'POST':
+            self.permission_classes = (IsAuthenticated,)
+        return super(TagView, self).get_permissions()
+
+    @action(methods=['get'], detail=True, permission_classes=[permission_classes])
+    def view(self, request, pk):
+        queryset = Tag.objects.all().filter(authors=pk)
+
+        serializer = TagMinimalSerializer(queryset, many=True)
+
+        return Response(serializer.data)
 
 
 class EntryView(viewsets.ModelViewSet):

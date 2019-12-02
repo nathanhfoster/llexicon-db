@@ -9,8 +9,7 @@ class CustomEntry(admin.ModelAdmin):
 class CustomTag(admin.ModelAdmin):
     model = Tag
     list_display = (
-        'id', 'author', 'title', 
-        'date_created', 'date_updated',)
+        'title', 'date_created', 'date_updated',)
 
 
 admin.site.register(Entry, CustomEntry)
