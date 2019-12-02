@@ -59,7 +59,7 @@ class EntryView(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            if self.request.path.find('view') != -1:
+            if self.request.path.find('view') != -1 or self.request.path.find('page') != -1:
                 self.permission_classes = (IsAuthenticated,)
             else:
                 self.permission_classes = (IsAuthorOrSuperUser,)
@@ -92,6 +92,14 @@ class EntryView(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def view(self, request, pk):
+        queryset = Entry.objects.all().filter(author=pk)
+
+        serializer = EntrySerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    @action(methods=['get'], detail=True, permission_classes=[permission_classes])
+    def page(self, request, pk):
         queryset = Entry.objects.all().filter(author=pk)
 
         page = self.paginate_queryset(queryset)
