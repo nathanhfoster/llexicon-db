@@ -1,6 +1,6 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .permissions import IsAuthorOrSuperUser, IsStaffOrTargetUser
-from django.db.models import Q
+from django.db.models import F, Q
 from rest_framework import serializers, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -112,6 +112,17 @@ class EntryView(viewsets.ModelViewSet):
         queryset = Entry.objects.all().filter(author=pk)
 
         serializer = EntrySerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    @action(methods=['get'], detail=True, permission_classes=[permission_classes])
+    def details(self, request, pk):
+        # user = request.user
+        entry = Entry.objects.get(pk=pk)
+        entry.views += 1
+        entry.save()
+        queryset = entry
+        serializer = EntrySerializer(queryset)
 
         return Response(serializer.data)
 
