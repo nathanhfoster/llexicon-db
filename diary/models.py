@@ -14,7 +14,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Tag'
         verbose_name_plural = 'Tags'
-        ordering = ('-date_created',)
+        ordering = ('title',)
 
     def __str__(self):
         return self.title

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, TagSerializer, TagMinimalSerializer
+from .serializers import EntrySerializer, EntryMinimalSerializer, TagSerializer, TagMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -48,6 +48,15 @@ class TagView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
+    def add_author(self, request, pk):
+        tag = Tag.objects.get(title=pk)
+        author = request.user
+        tag.authors.add(author)
+        tag.save()
+        serializer = TagSerializer(tag)
+        return Response(serializer.data)
+
 
 class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
@@ -75,18 +84,26 @@ class EntryView(viewsets.ModelViewSet):
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
     def update_with_tags(self, request, pk):
         entry = Entry.objects.get(id=pk)
+        user = request.user
 
         for key in request.data:
             if key == 'tags':
-                tags = json.loads(request.data[key])
                 entry.tags.clear()
-                entry.tags.set(tags)
+                tags = json.loads(request.data[key])
+                for t in tags:
+                    tagTitle = t['title']
+                    tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
+
+                    tag.authors.add(user)
+
+                    entry.tags.add(tag)
+
             else:
                 value = request.data[key]
                 setattr(entry, key, value)
 
         entry.save()
-        serializer = EntrySerializer(entry)
+        serializer = EntryMinimalSerializer(entry)
 
         return Response(serializer.data)
 
@@ -141,9 +158,12 @@ class EntryView(viewsets.ModelViewSet):
         queryset = Entry.objects.all().filter(
             Q(author=pk),
             Q(title__icontains=s) |
-            Q(html__icontains=s)
-        )[:10]
+            Q(html__icontains=s) |
+            Q(tags__in=s)
+        )[:25]
 
         serializer = EntrySerializer(queryset, many=True)
+
+        print("QUERY: ", queryset)
 
         return Response(serializer.data)

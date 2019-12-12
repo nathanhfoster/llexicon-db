@@ -24,3 +24,12 @@ class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry
         fields = '__all__'
+
+class EntryMinimalSerializer(serializers.ModelSerializer):
+    tags = TagMinimalSerializer(Tag, many=True,  read_only=True, required=False)
+    EntryFiles = FileSerializer(
+        File, many=True,  read_only=True, required=False)
+
+    class Meta:
+        model = Entry
+        fields = '__all__'
