@@ -37,9 +37,9 @@ class Entry(models.Model):
     views = models.PositiveIntegerField(default=0)
 
     latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, blank=True, null=True)
+        max_digits=18, decimal_places=15, blank=True, null=True)
     longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, blank=True, null=True)
+        max_digits=18, decimal_places=15, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Entry'
