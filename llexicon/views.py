@@ -14,6 +14,13 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from django.contrib.auth.models import update_last_login
 
+from rest_auth.serializers import PasswordResetSerializer
+from allauth.account.forms import ResetPasswordForm
+
+
+class PasswordSerializer (PasswordResetSerializer):
+    password_reset_form_class = ResetPasswordForm
+
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -27,7 +34,8 @@ class CustomAuthToken(ObtainAuthToken):
         uploaded_picture = None
         try:
             uploaded_picture = user.uploaded_picture.url
-        except: pass
+        except:
+            pass
         return Response({
             'token': token.key,
             'id': user.pk,

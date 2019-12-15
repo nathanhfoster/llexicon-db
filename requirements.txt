@@ -2,10 +2,12 @@
 bcrypt==3.1.4
 boto3==1.9.38
 django-environ==0.4.5
+django-rest-auth==0.9.5
 dj-database-url==0.5.0
 dj-static==0.0.6
 django-storages==1.7.1
 Django==2.1.11
+django-allauth==0.40.0
 django-cors-headers==2.4.0
 django-crispy-forms==1.7.2
 django-import-export==1.2.0

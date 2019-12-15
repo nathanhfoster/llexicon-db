@@ -33,11 +33,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'gosonder@gmail.com'  # my gmail username
-EMAIL_HOST_PASSWORD = 'yourpassword'  # my gmail password
+EMAIL_HOST_USER = 'nateinthegame@gmail.com'  # my gmail username
+EMAIL_HOST_PASSWORD = 'jalxkyhriemksdgh'  # my gmail password
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Nathan <gosonder@gmail.com>"
+# DEFAULT_FROM_EMAIL = ""
 
 
 ADMINS = [('Nathan', EMAIL_HOST_USER)]
@@ -54,8 +54,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
     'import_export',
 
     'authentication_authorization',
@@ -82,7 +87,7 @@ ROOT_URLCONF = 'llexicon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'allauth', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,10 +95,25 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 2
+
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'llexicon.views.PasswordSerializer',
+}
 
 WSGI_APPLICATION = 'llexicon.wsgi.application'
 
