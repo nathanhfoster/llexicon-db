@@ -35,6 +35,7 @@ class Entry(models.Model):
     date_created_by_author = models.DateTimeField(default=now())
     date_updated = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
+    rating = models.PositiveIntegerField(default=0)
 
     latitude = models.DecimalField(
         max_digits=18, decimal_places=15, blank=True, null=True)

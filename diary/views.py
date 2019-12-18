@@ -168,10 +168,10 @@ class EntryView(viewsets.ModelViewSet):
 
         queryset = Entry.objects.all().filter(
             Q(author=pk),
+            Q(tags__in=s) |
             Q(title__icontains=s) |
-            Q(html__icontains=s) |
-            Q(tags__in=s)
-        )[:25]
+            Q(html__icontains=s)
+        )[:50]
 
         serializer = EntrySerializer(queryset, many=True)
 
