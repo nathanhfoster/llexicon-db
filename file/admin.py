@@ -4,10 +4,6 @@ from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
 
 
-class CustomFile(admin.ModelAdmin):
-    model = File
-
-
 class FileResource(resources.ModelResource):
 
     class Meta:
