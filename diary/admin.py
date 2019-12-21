@@ -23,14 +23,14 @@ class EntryResource(resources.ModelResource):
     class Meta:
         model = Entry
         fields = ('id', 'author', 'tags', 'title', 'html',
-                  'date_created', 'date_created_by_author',  'date_updated',
-                  'views', 'latitude', 'longitude',)
+                  'date_created', 'date_created_by_author', 'date_updated',
+                  'views', 'address', 'latitude', 'longitude',)
 
 
 class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = EntryResource
     list_display = (
-        'id', 'title', 'author', 'date_created_by_author', 'date_updated',)
+        'id', 'title', 'author', 'address', 'date_created_by_author', 'date_updated',)
 
 
 admin.site.register(Entry, EntryAdmin)

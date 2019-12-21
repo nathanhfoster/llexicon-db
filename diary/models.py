@@ -37,6 +37,8 @@ class Entry(models.Model):
     views = models.PositiveIntegerField(default=0)
     rating = models.PositiveIntegerField(default=0)
 
+    address = models.CharField(max_length=256, blank=True)
+
     latitude = models.DecimalField(
         max_digits=18, decimal_places=15, blank=True, null=True)
     longitude = models.DecimalField(

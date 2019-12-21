@@ -175,6 +175,6 @@ class EntryView(viewsets.ModelViewSet):
 
         serializer = EntrySerializer(queryset, many=True)
 
-        print("QUERY: ", queryset)
+        # print("QUERY: ", queryset)
 
         return Response(serializer.data)
