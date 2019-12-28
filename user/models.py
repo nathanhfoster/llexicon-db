@@ -19,6 +19,7 @@ class Setting(models.Model):
         on_delete=models.CASCADE,)
 
     show_footer = models.BooleanField(default=False)
+    full_container_width = models.BooleanField(default=True)
     push_messages = models.BooleanField(default=False)
     offline_mode = models.BooleanField(default=False)
 
