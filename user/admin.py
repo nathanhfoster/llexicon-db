@@ -18,14 +18,14 @@ class SettingResource(resources.ModelResource):
 
     class Meta:
         model = Setting
-        fields = ('id', 'user', 'show_footer', 'full_container_width',
+        fields = ('id', 'user', 'show_footer', 
                   'push_messages', 'offline_mode',)
 
 
 class SettingAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = SettingResource
     list_display = (
-        'user', 'show_footer', 'full_container_width', 'push_messages', 'offline_mode',)
+        'user', 'show_footer', 'push_messages', 'offline_mode',)
 
 
 class UserResource(resources.ModelResource):
