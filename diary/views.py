@@ -64,7 +64,7 @@ class EntryView(viewsets.ModelViewSet):
     queryset = Entry.objects.all()
     permission_classes = (IsAuthorOrSuperUser,)
     filter_backends = (SearchFilter, )
-    search_fields = ('title', 'html')
+    search_fields = ('title', 'html', 'address')
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -166,13 +166,16 @@ class EntryView(viewsets.ModelViewSet):
 
         s = request.data['search']
 
+        if len(s) < 2:
+            return Response([])
+
         queryset = Entry.objects.all().filter(
             Q(author=pk),
             Q(tags__in=s) |
             Q(title__icontains=s) |
             Q(html__icontains=s) |
             Q(address__icontains=s)
-        )[:50]
+        )
 
         serializer = EntrySerializer(queryset, many=True)
 
