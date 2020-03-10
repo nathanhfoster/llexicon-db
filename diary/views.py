@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntrySerializer, TagSerializer, TagMinimalSerializer
+from .serializers import EntrySerializer, EntryMinimalSerializer, TagSerializer, TagMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -111,7 +111,7 @@ class EntryView(viewsets.ModelViewSet):
     def view(self, request, pk):
         queryset = Entry.objects.all().filter(author=pk)
 
-        serializer = EntrySerializer(queryset, many=True)
+        serializer = EntryMinimalSerializer(queryset, many=True)
 
         return Response(serializer.data)
 
@@ -122,7 +122,7 @@ class EntryView(viewsets.ModelViewSet):
         entry.views += 1
         entry.save()
         queryset = entry
-        serializer = EntrySerializer(queryset)
+        serializer = EntryMinimalSerializer(queryset)
 
         return Response(serializer.data)
 
@@ -132,10 +132,10 @@ class EntryView(viewsets.ModelViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = EntrySerializer(page, many=True)
+            serializer = EntryMinimalSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = EntrySerializer(queryset, many=True)
+        serializer = EntryMinimalSerializer(queryset, many=True)
 
         return Response(serializer.data)
 
@@ -157,7 +157,7 @@ class EntryView(viewsets.ModelViewSet):
         # end_date__year__lte=year,
         # end_date__month__lte=month, )
 
-        serializer = EntrySerializer(queryset, many=True)
+        serializer = EntryMinimalSerializer(queryset, many=True)
 
         return Response(serializer.data)
 
@@ -177,7 +177,7 @@ class EntryView(viewsets.ModelViewSet):
             Q(address__icontains=s)
         )
 
-        serializer = EntrySerializer(queryset, many=True)
+        serializer = EntryMinimalSerializer(queryset, many=True)
 
         # print("QUERY: ", queryset)
 
