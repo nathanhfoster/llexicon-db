@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntrySerializer, TagSerializer, TagSerializer
+from .serializers import EntrySerializer, EntrySerializer, TagSerializer, TagMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -44,7 +44,7 @@ class TagView(viewsets.ModelViewSet):
     def view(self, request, pk):
         queryset = Tag.objects.all().filter(authors=pk)
 
-        serializer = TagSerializer(queryset, many=True)
+        serializer = TagMinimalSerializer(queryset, many=True)
 
         return Response(serializer.data)
 

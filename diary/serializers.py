@@ -9,6 +9,11 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = '__all__'
 
+class TagMinimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        exclude = ('authors',)
+
 
 class EntrySerializer(serializers.ModelSerializer):
     tags = TagSerializer(Tag, many=True,  read_only=True, required=False)
