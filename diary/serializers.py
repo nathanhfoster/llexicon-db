@@ -12,7 +12,7 @@ class TagSerializer(serializers.ModelSerializer):
 class TagMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        exclude = ('authors',)
+        fields = ('title',)
 
 
 class EntrySerializer(serializers.ModelSerializer):

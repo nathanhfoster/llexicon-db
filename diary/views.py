@@ -100,6 +100,12 @@ class EntryView(viewsets.ModelViewSet):
 
             else:
                 value = request.data[key]
+
+                if(value == 'true'):
+                    value = True
+                elif value == 'false':
+                    value: False
+
                 setattr(entry, key, value)
 
         entry.save()

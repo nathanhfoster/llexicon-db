@@ -8,7 +8,7 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
     def has_permission(self, request, view):
         user = request.user
 
-        # print("User: ", user)
+        # print("view: ", view.action)
 
         if user.is_superuser:
             return True
@@ -17,11 +17,11 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
 
         # print('entryId: ', entryId)
 
-        entry_profile = Entry.objects.all().filter(Q(pk=entryId), Q(author=user))
+        entry = Entry.objects.get(pk=entryId)
 
-        # print("entry_profile: ", entry_profile)
-
-        if entry_profile.count() > 0:
+        if entry.is_public and view.action == 'details':
+            return True
+        elif entry.author == user:
             return True
 
         return False

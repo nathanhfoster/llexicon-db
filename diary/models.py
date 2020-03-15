@@ -44,6 +44,8 @@ class Entry(models.Model):
     longitude = models.DecimalField(
         max_digits=18, decimal_places=15, blank=True, null=True)
 
+    is_public = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = 'Entry'
         verbose_name_plural = 'Entries'
