@@ -104,7 +104,7 @@ class EntryView(viewsets.ModelViewSet):
                 if(value == 'true'):
                     value = True
                 elif value == 'false':
-                    value: False
+                    value = False
 
                 setattr(entry, key, value)
 
