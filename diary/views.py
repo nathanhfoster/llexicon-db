@@ -11,7 +11,7 @@ from .serializers import EntrySerializer, EntryMinimalSerializer, TagSerializer,
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchQuery, SearchVector
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
@@ -176,9 +176,11 @@ class EntryView(viewsets.ModelViewSet):
         if len(s) < 2:
             return Response([])
 
+        # query = SearchQuery(s)    
+
         # searchVector = SearchVector('title', 'html', 'address', 'tags', )
 
-        # queryset = Entry.objects.annotate(search=searchVector).filter(Q(author=2), search=s)
+        # queryset = Entry.objects.annotate(search=searchVector).filter(Q(author=pk), search=query)
 
         queryset = Entry.objects.all().filter(
             Q(author=pk),
