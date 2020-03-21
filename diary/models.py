@@ -32,7 +32,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=256, blank=True)
     html = models.TextField(default='<p><br></p>')
     date_created = models.DateTimeField(auto_now_add=True)
-    date_created_by_author = models.DateTimeField(default=now())
+    date_created_by_author = models.DateTimeField(default=now)
     date_updated = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
     rating = models.PositiveIntegerField(default=0)
