@@ -13,7 +13,6 @@ django-crispy-forms==1.7.2
 django-import-export==1.2.0
 djangorestframework==3.9.1
 gunicorn==19.9.0
-newrelic==4.8.0.110
 olefile==0.46
 packaging==18.0
 Pillow==6.2.1
