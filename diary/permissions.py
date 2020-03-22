@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from .models import Entry
-from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 class IsAuthorOrSuperUser(permissions.BasePermission):
@@ -17,7 +17,8 @@ class IsAuthorOrSuperUser(permissions.BasePermission):
 
         # print('entryId: ', entryId)
 
-        entry = Entry.objects.get(pk=entryId)
+
+        entry = get_object_or_404(Entry, pk=entryId)
 
         if entry.is_public and view.action == 'details':
             return True
