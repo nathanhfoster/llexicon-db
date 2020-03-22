@@ -12,7 +12,7 @@ from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
-
+from django.shortcuts import get_list_or_404
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
     page_size = 25
@@ -66,6 +66,13 @@ class EntryView(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrSuperUser,)
     filter_backends = (SearchFilter, )
     search_fields = ('title', 'html', 'address')
+
+    def get_queryset(self):
+        queryset = self.queryset
+        test_code = self.request.query_params.get('test_code', None)
+        if test_code is not None:
+           queryset = get_list_or_404(queryset, test__test_code=test_code)
+        return queryset
 
     def get_permissions(self):
         if self.request.method == 'GET':
