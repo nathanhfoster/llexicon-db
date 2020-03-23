@@ -14,6 +14,7 @@ from rest_framework.filters import SearchFilter
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.shortcuts import get_object_or_404
 
+
 class StandardResultsSetPagination(pagination.PageNumberPagination):
     page_size = 25
     page_size_query_param = 'page_size'
@@ -84,7 +85,7 @@ class EntryView(viewsets.ModelViewSet):
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
     def update_with_tags(self, request, pk):
-        entry = Entry.objects.get(id=pk)
+        entry = get_object_or_404(Entry, id=pk)
         user = request.user
 
         for key in request.data:
@@ -132,7 +133,6 @@ class EntryView(viewsets.ModelViewSet):
         serializer = EntryMinimalSerializer(queryset)
         response = serializer.data
         return Response(response)
-     
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def page(self, request, pk):
@@ -200,3 +200,26 @@ class EntryView(viewsets.ModelViewSet):
         # print("QUERY: ", queryset)
 
         return Response(serializer.data)
+
+    @action(methods=['post'], detail=False, permission_classes=[permission_classes])
+    def sync(self, request):
+        user = request.user
+        entries = Entry.objects.all()
+        entryIdsFromClient = json.loads(request.data.get('entries'))
+        entriesToGet = []
+        entriesToDelete = []
+
+        print('entryIdsFromClient: ', entryIdsFromClient)
+
+        for e in entries:
+            try:
+                index = entryIdsFromClient.index(e.id)
+                entryIdsFromClient.remove(index)
+            except:
+                entriesToGet.append(e.id)
+                # continue
+
+        response = json.dumps(entryIdsFromClient)
+        # print('entriesToDelete: ', entriesToDelete)
+
+        return Response(response)
