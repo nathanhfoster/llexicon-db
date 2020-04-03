@@ -82,9 +82,13 @@ class EntryView(viewsets.ModelViewSet):
         for key in request.data:
             if key == 'tags':
                 entry.tags.clear()
-                tags = json.loads(request.data[key])
+                # tags = json.loads(request.data[key])
+                tags = request.data[key].split(',')
+                print(tags)
                 for t in tags:
-                    tagTitle = t['title']
+                    # tagTitle = t['title']
+                    print(t)
+                    tagTitle = t
                     tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
 
                     tag.authors.add(user)
