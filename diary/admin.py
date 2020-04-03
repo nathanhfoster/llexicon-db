@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Entry, Tag
+from .models import Tag, Entry
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
 
@@ -7,9 +7,10 @@ from import_export.admin import ImportExportActionModelAdmin
 class TagResource(resources.ModelResource):
 
     class Meta:
-        model = Entry
-        fields = ('id', 'authors', 'title',
-                  'date_created',  'date_updated',)
+        model = Tag
+        import_id_fields = ("title",)
+        fields = ('title', 'authors', 'date_created',  'date_updated', )
+        widgets = {"authors": {"field": "pk"}}
 
 
 class TagAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
@@ -22,9 +23,10 @@ class EntryResource(resources.ModelResource):
 
     class Meta:
         model = Entry
-        fields = ('id', 'author', 'tags', 'title', 'html',
+        fields = ('id', 'author', 'title', 'html',
                   'date_created', 'date_created_by_author', 'date_updated',
-                  'views', 'address', 'latitude', 'longitude', 'is_public', )
+                  'views', 'address', 'latitude', 'longitude', 'is_public', 'tags',)
+        widgets = {"tags": {"field": "title"}}
 
 
 class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):

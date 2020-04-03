@@ -45,6 +45,7 @@ class User(AbstractUser):
             'unique': ("A user with that username or email already exists."),
         },
     )
+    email = models.EmailField(unique=True)
     opt_in = models.BooleanField(blank=True, default=False)
 
     class Meta:

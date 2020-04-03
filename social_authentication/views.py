@@ -43,7 +43,7 @@ class SocialAuthenticationView(viewsets.ModelViewSet):
         picture = request.data['picture']
         [first_name, last_name] = str.split(name)
 
-        username = name.replace(" ", "")
+        username = email
 
         user, userCreated = User.objects.filter(
             Q(email=email)
