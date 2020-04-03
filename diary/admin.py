@@ -25,7 +25,7 @@ class EntryResource(resources.ModelResource):
         model = Entry
         fields = ('id', 'author', 'title', 'html',
                   'date_created', 'date_created_by_author', 'date_updated',
-                  'views', 'address', 'latitude', 'longitude', 'is_public', 'tags',)
+                  'views', 'rating', 'address', 'latitude', 'longitude', 'is_public', 'tags',)
         widgets = {"tags": {"field": "title"}}
 
 
