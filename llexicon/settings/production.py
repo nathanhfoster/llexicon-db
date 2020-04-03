@@ -133,6 +133,7 @@ DATABASES = {
 }
 # heroku addons:create heroku-postgresql:hobby-dev
 # heroku config:set DJANGO_SETTINGS_MODULE=llexicon.settings.production
+# heroku run python manage.py makemigrations user
 # heroku run python manage.py makemigrations
 # heroku run python manage.py migrate
 # heroku run python manage.py createsuperuser
