@@ -50,15 +50,6 @@ class TagView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
-    def add_author(self, request, pk):
-        tag = Tag.objects.get(title=pk)
-        author = request.user
-        tag.authors.add(author)
-        tag.save()
-        serializer = TagSerializer(tag)
-        return Response(serializer.data)
-
 
 class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
