@@ -84,16 +84,12 @@ class EntryView(viewsets.ModelViewSet):
                 entry.tags.clear()
                 # tags = json.loads(request.data[key])
                 tags = request.data[key].split(',')
-                print(tags)
-                for t in tags:
+                for tagTitle in tags:
                     # tagTitle = t['title']
-                    print(t)
-                    tagTitle = t
-                    tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
-
-                    tag.authors.add(user)
-
-                    entry.tags.add(tag)
+                    if (tagTitle is not None):
+                        tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
+                        tag.authors.add(user)
+                        entry.tags.add(tag)
 
             else:
                 value = request.data[key]
@@ -204,7 +200,7 @@ class EntryView(viewsets.ModelViewSet):
         entriesToGet = []
         entriesToDelete = []
 
-        print('entryIdsFromClient: ', entryIdsFromClient)
+        # print('entryIdsFromClient: ', entryIdsFromClient)
 
         for e in entries:
             try:
