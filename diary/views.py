@@ -86,7 +86,7 @@ class EntryView(viewsets.ModelViewSet):
                 tags = request.data[key].split(',')
                 for tagTitle in tags:
                     # tagTitle = t['title']
-                    if (tagTitle is not None):
+                    if (tagTitle):
                         tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
                         tag.authors.add(user)
                         entry.tags.add(tag)
