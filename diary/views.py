@@ -5,9 +5,9 @@ from rest_framework import serializers, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Entry, Tag
+from .models import Entry, Tag, Person
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntryMinimalSerializer, TagSerializer, TagMinimalSerializer
+from .serializers import EntrySerializer, EntryMinimalSerializer,  TagMinimalSerializer, PersonMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -28,7 +28,7 @@ class LargeResultsSetPagination(pagination.PageNumberPagination):
 
 
 class TagView(viewsets.ModelViewSet):
-    serializer_class = TagSerializer
+    serializer_class = TagMinimalSerializer
     queryset = Tag.objects.all()
     permission_classes = (IsAuthenticated,)
 
@@ -51,6 +51,30 @@ class TagView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class PersonView(viewsets.ModelViewSet):
+    serializer_class = PersonMinimalSerializer
+    queryset = Person.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            if self.request.path.find('view') != -1:
+                self.permission_classes = (IsAuthenticated,)
+        if self.request.method == 'PATCH':
+            self.permission_classes = (IsAuthenticated,)
+        if self.request.method == 'POST':
+            self.permission_classes = (IsAuthenticated,)
+        return super(PersonView, self).get_permissions()
+
+    @action(methods=['get'], detail=True, permission_classes=[permission_classes])
+    def view(self, request, pk):
+        queryset = Person.objects.all().filter(authors=pk)
+
+        serializer = PersonMinimalSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
 class EntryView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     pagination_class = StandardResultsSetPagination
@@ -66,7 +90,7 @@ class EntryView(viewsets.ModelViewSet):
             else:
                 self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'PATCH':
-            # if self.request.path.find('update_with_tags') != -1:
+            # if self.request.path.find('update_entry') != -1:
             #     self.permission_classes = (IsAuthenticated,)
             # else:
             self.permission_classes = (IsAuthorOrSuperUser,)
@@ -75,21 +99,31 @@ class EntryView(viewsets.ModelViewSet):
         return super(EntryView, self).get_permissions()
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
-    def update_with_tags(self, request, pk):
+    def update_entry(self, request, pk):
         entry = get_object_or_404(Entry, id=pk)
         user = request.user
 
         for key in request.data:
             if key == 'tags':
                 entry.tags.clear()
-                # tags = json.loads(request.data[key])
                 tags = request.data[key].split(',')
-                for tagTitle in tags:
-                    # tagTitle = t['title']
-                    if (tagTitle):
-                        tag, tagCreate = Tag.objects.get_or_create(title=tagTitle)
+                for tagName in tags:
+                    if (tagName):
+                        tag, tagCreate = Tag.objects.get_or_create(
+                            name=tagName)
                         tag.authors.add(user)
                         entry.tags.add(tag)
+            elif key == 'people':
+                entry.people.clear()
+                # tags = json.loads(request.data[key])
+                people = request.data[key].split(',')
+                for personName in people:
+                    # tagName = t['title']
+                    if (personName):
+                        person, personCreate = Person.objects.get_or_create(
+                            name=personName)
+                        person.authors.add(user)
+                        entry.people.add(person)
 
             else:
                 value = request.data[key]

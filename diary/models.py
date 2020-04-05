@@ -7,17 +7,34 @@ class Tag(models.Model):
     authors = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='tags', )
-    title = models.CharField(max_length=256, primary_key=True)
+    name = models.CharField(max_length=256, primary_key=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Tag'
         verbose_name_plural = 'Tags'
-        ordering = ('title',)
+        ordering = ('name',)
 
     def __str__(self):
-        return self.title
+        return self.name
+
+
+class Person(models.Model):
+    authors = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='people', )
+    name = models.CharField(max_length=256, primary_key=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Person'
+        verbose_name_plural = 'People'
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
 
 
 class Entry(models.Model):
@@ -28,6 +45,10 @@ class Entry(models.Model):
     tags = models.ManyToManyField(
         Tag,
         related_name='tags',
+        blank=True, )
+    people = models.ManyToManyField(
+        Person,
+        related_name='people',
         blank=True, )
     title = models.CharField(max_length=256, blank=True)
     html = models.TextField(default='<p><br></p>')

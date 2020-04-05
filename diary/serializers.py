@@ -1,22 +1,22 @@
 from rest_framework import serializers, validators
-from .models import Entry, Tag
+from .models import Entry, Tag, Person
 from file.models import File
 from file.serializers import FileSerializer
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = '__all__'
 
 class TagMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('title',)
+        fields = ('name',)
+
+class PersonMinimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('name',)
 
 
 class EntrySerializer(serializers.ModelSerializer):
-    tags = TagSerializer(Tag, many=True,  read_only=True, required=False)
+    tags = TagMinimalSerializer(Tag, many=True,  read_only=True, required=False)
+    people = PersonMinimalSerializer(Person, many=True,  read_only=True, required=False)
     EntryFiles = FileSerializer(
         File, many=True,  read_only=True, required=False)
 
@@ -26,6 +26,7 @@ class EntrySerializer(serializers.ModelSerializer):
 
 class EntryMinimalSerializer(serializers.ModelSerializer):
     tags = TagMinimalSerializer(Tag, many=True,  read_only=True, required=False)
+    people = PersonMinimalSerializer(Person, many=True,  read_only=True, required=False)
     EntryFiles = FileSerializer(
         File, many=True,  read_only=True, required=False)
 
