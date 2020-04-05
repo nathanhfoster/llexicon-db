@@ -135,7 +135,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'llexicon',
         'USER': 'postgres',
-        'PASSWORD': 'sonder',
+        'PASSWORD': 'Evelynn8',
         'HOST': '127.0.0.1',
         'PORT': '8080',
     }
@@ -188,7 +188,7 @@ USE_TZ = True
 
 AWS_USE_S3 = os.environ.get('AWS_USE_S3') == 'True'
 if AWS_USE_S3:
-     # aws settings
+    # aws settings
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')

@@ -215,6 +215,7 @@ class EntryView(viewsets.ModelViewSet):
         queryset = Entry.objects.all().filter(
             Q(author=pk),
             Q(tags__in=s) |
+            Q(people__in=s) |
             Q(title__icontains=s) |
             Q(html__icontains=s) |
             Q(address__icontains=s)
