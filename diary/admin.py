@@ -44,7 +44,7 @@ class EntryResource(resources.ModelResource):
 class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = EntryResource
     list_display = (
-        'id', 'title', 'author', 'address', 'date_created_by_author', 'date_updated',)
+        'id', 'title', 'author', 'address', 'is_public', 'date_created_by_author', 'date_updated',)
 
 
 admin.site.register(Entry, EntryAdmin)
