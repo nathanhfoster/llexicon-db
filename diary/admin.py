@@ -16,6 +16,8 @@ class TagResource(resources.ModelResource):
 class TagAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = TagResource
     list_display = ('name', 'date_created', 'date_updated',)
+    search_fields = ('name', 'date_created',  'date_updated', )
+
 
 class PersonResource(resources.ModelResource):
 
@@ -29,6 +31,7 @@ class PersonResource(resources.ModelResource):
 class PersonAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = PersonResource
     list_display = ('name', 'date_created', 'date_updated',)
+    search_fields = ('name', 'date_created',  'date_updated', )
 
 
 class EntryResource(resources.ModelResource):
@@ -38,13 +41,18 @@ class EntryResource(resources.ModelResource):
         fields = ('id', 'author', 'title', 'html',
                   'date_created', 'date_created_by_author', 'date_updated',
                   'views', 'rating', 'address', 'latitude', 'longitude', 'is_public', 'tags', 'people',)
-        widgets = {"tags": {"field": "name"}, "people" : {"field": "name"}}
+        widgets = {"tags": {"field": "name"}, "people": {"field": "name"}}
 
 
 class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = EntryResource
+
     list_display = (
         'id', 'title', 'author', 'address', 'views', 'rating', 'is_public', 'date_created_by_author', 'date_updated',)
+
+    search_fields = ('title', 'address', 'views', 'rating',
+                     'is_public', 'date_created_by_author', 'date_updated',)
+    # autocomplete_fields = ('author', )
 
 
 admin.site.register(Entry, EntryAdmin)

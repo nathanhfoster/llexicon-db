@@ -18,6 +18,9 @@ class FileAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'entry_id',
                     'file_type', 'name', 'size', 'url',
                     'date_created', 'date_updated', 'date_modified',)
+    search_fields = ('id', 'entry_id',
+                    'file_type', 'name', 'size', 'url',
+                    'date_created', 'date_updated', 'date_modified',)
 
 
 admin.site.register(File, FileAdmin)
