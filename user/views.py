@@ -21,7 +21,7 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter, )
-    search_fields = ('id',)
+    search_fields = ('email', 'id', 'username', 'first_name', 'last_name', )
 
     def get_permissions(self):
         # allow an authenticated user to create via POST
