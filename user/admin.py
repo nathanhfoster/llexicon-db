@@ -44,7 +44,7 @@ class UserAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
         'username', 'id', 'opt_in',
         'is_superuser', 'email', 'is_staff',
         'is_active', 'date_joined', 'last_login',)
-    search_fields = ('username', 'id', 'email', )
+    search_fields = ('id', 'username', 'email', )
 
 
 admin.site.register(User, UserAdmin)
