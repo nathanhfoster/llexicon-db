@@ -9,7 +9,7 @@ from social_authentication.serializers import SocialAuthenticationSerializer
 class SettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Setting
-        fields = ('id', 'user', 'show_footer',
+        fields = ('id', 'user', 'show_animated_background',
                   'push_messages', 'offline_mode',)
         read_only_fields = ('id',)
 

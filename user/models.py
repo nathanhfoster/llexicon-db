@@ -18,7 +18,7 @@ class Setting(models.Model):
         related_name='Settings',
         on_delete=models.CASCADE,)
 
-    show_footer = models.BooleanField(default=False)
+    show_animated_background = models.BooleanField(default=False)
     push_messages = models.BooleanField(default=False)
     offline_mode = models.BooleanField(default=False)
 

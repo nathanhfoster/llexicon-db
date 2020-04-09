@@ -75,4 +75,4 @@ class SettingView(viewsets.ModelViewSet):
         if serializer.data:
             return Response(serializer.data[0])
         else:
-            return Response({'show_footer': False, 'push_messages': False, 'offline_mode': False})
+            return Response({'show_animated_background': False, 'push_messages': False, 'offline_mode': False})
