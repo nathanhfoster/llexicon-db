@@ -18,7 +18,7 @@ class SettingResource(resources.ModelResource):
 
     class Meta:
         model = Setting
-        fields = ('id', 'user', 'show_animated_background', 
+        fields = ('id', 'user', 'show_animated_background',
                   'push_messages', 'offline_mode',)
 
 
@@ -41,9 +41,10 @@ class UserResource(resources.ModelResource):
 class UserAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = UserResource
     list_display = (
-        'username', 'id', 'opt_in',
-        'is_superuser', 'email', 'is_staff',
+        'id', 'username', 'email', 'opt_in',
+        'is_superuser', 'is_staff',
         'is_active', 'date_joined', 'last_login',)
+    list_display_links = ('id', 'username', 'email',)
     search_fields = ('id', 'username', 'email', )
 
 
