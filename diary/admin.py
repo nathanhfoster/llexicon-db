@@ -48,10 +48,10 @@ class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
     resource_class = EntryResource
 
     list_display = (
-        'id', 'title', 'author', 'address', 'views', 'rating', 'is_public', 'date_created_by_author', 'date_updated',)
+        'id', 'title', 'author', 'address', 'views', 'rating', 'is_public', 'date_created', 'date_created_by_author', 'date_updated',)
 
     search_fields = ('id', 'title', 'address', 'views', 'rating',
-                     'is_public', 'date_created_by_author', 'date_updated',)
+                     'is_public', 'date_created', 'date_created_by_author', 'date_updated',)
     # autocomplete_fields = ('author', )
 
 
