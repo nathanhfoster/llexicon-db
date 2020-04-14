@@ -49,7 +49,7 @@ class EntryAdmin(ImportExportActionModelAdmin, admin.ModelAdmin):
 
     list_display = (
         'id', 'title', 'author', 'address', 'views', 'rating', 'is_public', 'date_created', 'date_created_by_author', 'date_updated',)
-
+    list_display_links = ('id', 'title', 'author', )
     search_fields = ('id', 'title', 'address', 'views', 'rating',
                      'is_public', 'date_created', 'date_created_by_author', 'date_updated',)
     # autocomplete_fields = ('author', )
