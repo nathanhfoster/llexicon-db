@@ -87,6 +87,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
 ROOT_URLCONF = 'llexicon.urls'
 
 TEMPLATES = [
@@ -195,7 +198,7 @@ REST_FRAMEWORK = {
 
 AWS_USE_S3 = os.environ.get('AWS_USE_S3') == 'True'
 if AWS_USE_S3:
-     # aws settings
+    # aws settings
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
