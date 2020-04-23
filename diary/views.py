@@ -151,13 +151,12 @@ class EntryView(viewsets.ModelViewSet):
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def details(self, request, pk):
         # user = request.user
+        # Entry.objects.all().filter(pk=pk).update(views=F('views') + 1)
         entry = get_object_or_404(Entry, pk=pk)
         entry.views += 1
         entry.save()
-        queryset = entry
-        serializer = EntryMinimalSerializer(queryset)
-        response = serializer.data
-        return Response(response)
+        serializer = EntryMinimalSerializer(entry)
+        return Response(serializer.data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def page(self, request, pk):
@@ -214,8 +213,8 @@ class EntryView(viewsets.ModelViewSet):
 
         queryset = Entry.objects.all().filter(
             Q(author=pk),
-            Q(tags__name__icontains=s) | 
-            Q(people__name__icontains=s) | 
+            Q(tags__name__icontains=s) |
+            Q(people__name__icontains=s) |
             Q(title__icontains=s) |
             Q(html__icontains=s) |
             Q(address__icontains=s)
