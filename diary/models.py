@@ -1,13 +1,13 @@
 from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
-
+from django.core.validators import MinLengthValidator
 
 class Tag(models.Model):
     authors = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='tags', )
-    name = models.CharField(max_length=256, primary_key=True)
+    name = models.CharField('name', max_length=256, validators=[MinLengthValidator(2)], primary_key=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -24,7 +24,7 @@ class Person(models.Model):
     authors = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='people', )
-    name = models.CharField(max_length=256, primary_key=True)
+    name = models.CharField('name', max_length=256, validators=[MinLengthValidator(3)], primary_key=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
