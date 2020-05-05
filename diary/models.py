@@ -70,7 +70,7 @@ class Entry(models.Model):
     class Meta:
         verbose_name = 'Entry'
         verbose_name_plural = 'Entries'
-        ordering = ('date_updated', '-date_created_by_author', )
+        ordering = ('-date_updated', '-date_created_by_author', )
 
     # def __str__(self):
     #     return self.title
