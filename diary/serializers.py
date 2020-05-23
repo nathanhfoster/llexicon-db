@@ -47,6 +47,7 @@ class EntryProtectedSerializer(serializers.ModelSerializer):
     size = serializers.SerializerMethodField()
     tags = TagMinimalSerializer(Tag, many=True, read_only=True, required=False)
     people = serializers.SerializerMethodField()
+    EntryFiles = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
@@ -59,6 +60,9 @@ class EntryProtectedSerializer(serializers.ModelSerializer):
         return get_obj_size(obj)
 
     def get_people(self, obj):
+        return []
+
+    def get_EntryFiles(self, obj):
         return []
 
     def get_address(self, obj):
