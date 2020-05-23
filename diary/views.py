@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag, Person
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntryMinimalSerializer,  TagMinimalSerializer, PersonMinimalSerializer
+from .serializers import EntrySerializer, EntryMinimalSerializer, EntryProtectedSerializer, TagMinimalSerializer, PersonMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -150,12 +150,13 @@ class EntryView(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def details(self, request, pk):
-        # user = request.user
+        user = request.user
         # Entry.objects.all().filter(pk=pk).update(views=F('views') + 1)
         entry = get_object_or_404(Entry, pk=pk)
         entry.views += 1
         entry.save()
-        serializer = EntryMinimalSerializer(entry)
+        serializer = EntryProtectedSerializer(entry) if(user.is_anonymous) else EntryMinimalSerializer(entry)
+
         return Response(serializer.data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
