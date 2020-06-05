@@ -3,6 +3,7 @@ from django.utils.timezone import now
 
 
 class Subscription(models.Model):
+    id = models.TextField(primary_key=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     date_modified = models.DateTimeField(default=now)
