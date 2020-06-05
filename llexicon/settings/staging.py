@@ -1,3 +1,4 @@
+import dj_database_url
 """
 Django settings for ideas project.
 
@@ -26,12 +27,15 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+9!j2(jk7v$7+0b1v(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-'
-
+# SECRET_KEY = '+9!j2(jk7v$7+0b1v(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', '+9!j2(jk7v$7+0b1v(z9+3vnm(jb0u@&w68t#5_e8s9-lbfhv-')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+your_website = os.environ.get('YOUR_WEBSITE', '.llexicom.com')
+ALLOWED_HOSTS = ['.herokuapp.com', '.knockhq.com', your_website]
+PROJECT_NAME = os.environ.get('Lexicon', 'Lexicon')
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'nateinthegame@gmail.com'  # my gmail username
@@ -41,10 +45,9 @@ EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = ""
 
 
-ADMINS = [('Nathan', EMAIL_HOST_USER)]
-MANAGERS = ADMINS
+# ADMINS = [('Nathan', EMAIL_HOST_USER)]
+# MANAGERS = ADMINS
 AUTH_USER_MODEL = "user.User"
-
 
 # Application definition
 
@@ -70,10 +73,12 @@ INSTALLED_APPS = [
     'social_authentication',
     'file',
     'subscription',
+    'storages',
     'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,8 +86,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
 ROOT_URLCONF = 'llexicon.urls'
 
@@ -128,7 +135,15 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# heroku addons:create heroku-postgresql:hobby-dev
+# heroku config:set DJANGO_SETTINGS_MODULE=llexicon.settings.production
+# heroku run python manage.py makemigrations user
+# heroku run python manage.py makemigrations
+# heroku run python manage.py migrate
+# heroku run python manage.py createsuperuser
 
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -171,9 +186,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.10/howto/static-files/
+
 AWS_USE_S3 = os.environ.get('AWS_USE_S3') == 'True'
 if AWS_USE_S3:
-     # aws settings
+    # aws settings
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -198,24 +224,6 @@ else:
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', )
-}
-
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static"),
-# )
-
-# STATIC_ROOT = os.path.join(BASE_DIR, "live-static", "static-root")
-
-# MEDIA_URL = "/media/"
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, "live-static", "media-root")
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
