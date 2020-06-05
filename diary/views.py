@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag, Person
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntryMinimalSerializer,  TagMinimalSerializer, PersonMinimalSerializer
+from .serializers import EntrySerializer, EntryMinimalSerializer, EntryProtectedSerializer, TagMinimalSerializer, PersonMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -150,12 +150,14 @@ class EntryView(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def details(self, request, pk):
-        # user = request.user
+        user = request.user
         # Entry.objects.all().filter(pk=pk).update(views=F('views') + 1)
         entry = get_object_or_404(Entry, pk=pk)
         entry.views += 1
         entry.save()
-        serializer = EntryMinimalSerializer(entry)
+        serializer = EntryProtectedSerializer(entry) if(
+            user.is_anonymous) else EntryMinimalSerializer(entry)
+
         return Response(serializer.data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
@@ -174,18 +176,45 @@ class EntryView(viewsets.ModelViewSet):
     @action(methods=['post'], detail=True, permission_classes=[permission_classes])
     def view_by_date(self, request, pk):
 
-        dateString = request.data['date']
-        date = dateString.split('-')
-        year = date[0]
-        month = date[1]
-        day = date[2].split('T')[0]
+        # dateString = request.data['date']
+        # date = dateString.split('-')
+        # year = date[0]
+        # month = date[1]
+        # day = date[2].split('T')[0]
+
+        year = request.data['year'] if 'year' in request.data else None
+        month = request.data['month'] if 'month' in request.data else None
+        day = request.data['day'] if 'day' in request.data else None
 
         # print(year, month, day)
 
-        queryset = Entry.objects.all().filter(
-            author=pk,
-            date_created_by_author__year__gte=year,
-            date_created_by_author__month__gte=month,)
+        queryset = None
+        if(year and month and day):
+            queryset = Entry.objects.all().filter(
+                author=pk,
+                date_created_by_author__year__gte=year,
+                date_created_by_author__month__gte=month,
+                date_created_by_author__day__gte=day,)
+        elif (year and day):
+            queryset = Entry.objects.all().filter(
+                author=pk,
+                date_created_by_author__year__gte=year,
+                date_created_by_author__day__gte=day,)
+
+        elif (month and day):
+            queryset = Entry.objects.all().filter(
+                author=pk,
+                date_created_by_author__month__gte=month,
+                date_created_by_author__day__gte=day,)
+
+        elif (year):
+            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__year__gte=year,)
+
+        elif (month):
+            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__month__gte=month,)
+
+        elif (day):
+            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__day__gte=day,)
         # end_date__year__lte=year,
         # end_date__month__lte=month, )
 
