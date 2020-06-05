@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/v1/', include('diary.urls')),
     path('api/v1/', include('social_authentication.urls')),
     path('api/v1/', include('file.urls')),
+    path('api/v1/', include('subscription.urls')),
     path('api/v1/api-auth/', include('rest_framework.urls')),
     path('api/v1/login/', CustomAuthToken.as_view()),
     path('api/v1/rest-auth/', include('rest_auth.urls')),
