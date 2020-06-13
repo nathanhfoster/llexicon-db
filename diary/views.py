@@ -95,7 +95,10 @@ class EntryView(viewsets.ModelViewSet):
             # else:
             self.permission_classes = (IsAuthorOrSuperUser,)
         if self.request.method == 'POST':
-            self.permission_classes = (IsAuthenticated,)
+            if self.request.path.find('public_view') != -1:
+                self.permission_classes = (AllowAny,)
+            else:
+                self.permission_classes = (IsAuthenticated,)
         return super(EntryView, self).get_permissions()
 
     @action(methods=['patch'], detail=True, permission_classes=[permission_classes])
@@ -160,6 +163,15 @@ class EntryView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @action(methods=['post'], detail=True, permission_classes=[permission_classes])
+    def public_view(self, request, pk):
+        author = pk
+        entries = Entry.objects.all().filter(author=author, is_public=True)
+
+        serializer = EntryMinimalSerializer(entries, many=True)
+
+        return Response(serializer.data)
+
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
     def page(self, request, pk):
         queryset = Entry.objects.all().filter(author=pk)
@@ -208,13 +220,16 @@ class EntryView(viewsets.ModelViewSet):
                 date_created_by_author__day__gte=day,)
 
         elif (year):
-            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__year__gte=year,)
+            queryset = Entry.objects.all().filter(
+                author=pk, date_created_by_author__year__gte=year,)
 
         elif (month):
-            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__month__gte=month,)
+            queryset = Entry.objects.all().filter(
+                author=pk, date_created_by_author__month__gte=month,)
 
         elif (day):
-            queryset = Entry.objects.all().filter(author=pk, date_created_by_author__day__gte=day,)
+            queryset = Entry.objects.all().filter(
+                author=pk, date_created_by_author__day__gte=day,)
         # end_date__year__lte=year,
         # end_date__month__lte=month, )
 
