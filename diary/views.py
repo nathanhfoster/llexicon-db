@@ -16,9 +16,9 @@ from django.shortcuts import get_object_or_404
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 50
+    page_size = 25
     page_size_query_param = 'page_size'
-    # max_page_size = 500
+    # max_page_size = 250
 
 
 class LargeResultsSetPagination(pagination.PageNumberPagination):
