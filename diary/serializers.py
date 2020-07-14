@@ -15,6 +15,11 @@ class PersonMinimalSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('name',)
 
+class AdminEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entry
+        fields = ('id', 'author',)     
+
 
 class EntrySerializer(serializers.ModelSerializer):
     size = serializers.SerializerMethodField()

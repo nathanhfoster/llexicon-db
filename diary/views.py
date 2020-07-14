@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Entry, Tag, Person
 from rest_framework import viewsets, permissions
-from .serializers import EntrySerializer, EntryMinimalSerializer, EntryProtectedSerializer, TagMinimalSerializer, PersonMinimalSerializer
+from .serializers import AdminEntrySerializer, EntrySerializer, EntryMinimalSerializer, EntryProtectedSerializer, TagMinimalSerializer, PersonMinimalSerializer
 from django.utils.timezone import now
 import json
 from rest_framework.filters import SearchFilter
@@ -141,6 +141,12 @@ class EntryView(viewsets.ModelViewSet):
         entry.save()
         serializer = EntrySerializer(entry)
 
+        return Response(serializer.data)
+
+    @action(methods=['get'], detail=False, permission_classes=[permission_classes])
+    def all(self, request):
+        queryset = Entry.objects.all()
+        serializer = AdminEntrySerializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(methods=['get'], detail=True, permission_classes=[permission_classes])
