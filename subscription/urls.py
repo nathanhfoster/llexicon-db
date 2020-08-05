@@ -1,9 +1,9 @@
 from django.urls import path, include
-from .views import VersionView
+from .views import SubscriptionView
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('versions', VersionView)
+router.register('subscription', SubscriptionView)
 
 
 urlpatterns = [

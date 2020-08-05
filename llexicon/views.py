@@ -50,5 +50,9 @@ class CustomAuthToken(ObtainAuthToken):
             'is_active': user.is_active,
             'last_login': user.last_login,
             'opt_in': user.opt_in,
-            'date_joined': user.date_joined
+            'date_joined': user.date_joined,
+            'is_superuser': user.is_superuser,
+            'is_staff': user.is_staff,
+            'is_active': user.is_active,
+
         })

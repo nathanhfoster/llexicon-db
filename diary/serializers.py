@@ -15,6 +15,11 @@ class PersonMinimalSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('name',)
 
+class AdminEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entry
+        fields = ('id', 'author',)     
+
 
 class EntrySerializer(serializers.ModelSerializer):
     size = serializers.SerializerMethodField()
@@ -41,5 +46,37 @@ class EntryMinimalSerializer(serializers.ModelSerializer):
         
     def get_size(self, obj):
         return get_obj_size(obj)
+
+
+class EntryProtectedSerializer(serializers.ModelSerializer):
+    size = serializers.SerializerMethodField()
+    tags = TagMinimalSerializer(Tag, many=True, read_only=True, required=False)
+    people = serializers.SerializerMethodField()
+    EntryFiles = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Entry
+        fields = '__all__'
+        
+    def get_size(self, obj):
+        return get_obj_size(obj)
+
+    def get_people(self, obj):
+        return []
+
+    def get_EntryFiles(self, obj):
+        return []
+
+    def get_address(self, obj):
+        return None
+
+    def get_latitude(self, obj):
+        return None
+
+    def get_longitude(self, obj):
+        return None
 
 

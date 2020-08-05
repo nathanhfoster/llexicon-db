@@ -21,6 +21,7 @@ class Setting(models.Model):
     show_animated_background = models.BooleanField(default=True)
     push_messages = models.BooleanField(default=False)
     offline_mode = models.BooleanField(default=False)
+    dark_mode = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Setting'
