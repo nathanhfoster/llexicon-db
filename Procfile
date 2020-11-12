@@ -1,2 +1,2 @@
 release: python manage.py migrate --noinput
-web: gunicorn llexicon.wsgi
+web: gunicorn llexicon.wsgi --timeout 300
