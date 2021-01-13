@@ -278,6 +278,17 @@ class EntryView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(methods=['post'], detail=False, permission_classes=[permission_classes])
+    def delete(self, request):
+
+        entriesMap = request.data['entriesMap']
+
+        queryset = Entry.objects.all().filter(id__in=entriesMap)
+
+        serializer = EntryMinimalSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    @action(methods=['post'], detail=False, permission_classes=[permission_classes])
     def sync(self, request):
         user = request.user
         entries = Entry.objects.all()
